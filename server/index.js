@@ -30,6 +30,17 @@ app.use('/api/users', userRouter)
 app.use('/api/videos', videoRouter)
 app.use('/api/comments', commentRouter)
 
+//ошибки
+app.use((err, req, res, next) => {
+    const status = err.status || 500;
+    const message = err.message || "Что-то пошло не так!";
+    return res.status(status).json({
+        success: false,
+        status,
+        message,
+    });
+});
+
 
 app.listen(PORT, () => {
     connect();
