@@ -1,5 +1,13 @@
 import {Router} from 'express';
-import {createVideo, deleteVideo, getVideo, updateVideo} from "../controllers/videoController.js";
+import {
+    addView,
+    createVideo,
+    deleteVideo,
+    getVideo,
+    randomVideos, search, subscribedVideos, tagVideos,
+    trendVideos,
+    updateVideo
+} from "../controllers/videoController.js";
 import checkAuth from "../utils/checkAuth.js";
 
 
@@ -9,9 +17,11 @@ router.post('/',checkAuth, createVideo )
 router.delete('/:id',checkAuth, deleteVideo )
 router.put('/:id',checkAuth, updateVideo )
 router.get('/find/:id', getVideo )
-router.put('/view/:id', getVideo )
-router.get('/trend', getVideo )
-router.get('/random', getVideo )
-router.get('/sub', getVideo )
+router.put('/view/:id', addView )
+router.get('/trend', trendVideos)
+router.get('/random', randomVideos)
+router.get("/tags", tagVideos)
+router.get("/search", search)
+router.get('/sub',checkAuth, subscribedVideos )
 
 export default router;
