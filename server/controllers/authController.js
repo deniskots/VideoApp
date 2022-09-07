@@ -27,6 +27,7 @@ export const login = async (req, res, next) => {
             return res.status(400).json({message: 'Sorry, неверный логин или пароль'})
         }
         const token = jwt.sign({id: user._id}, 'secret', {expiresIn: '30d'})
+        //что бы не возаращать пароль
         const {password, ...userData} = user._doc
         res.json({
             ...userData,
@@ -48,9 +49,7 @@ export const getMe = async (req, res, next) => {
         };
         const {password, ...userData} = user._doc;
 
-        res.json({
-            ...userData
-        })
+        res.json({...userData})
     }catch (err) {
         console.log(err)
         res.status(500).json({
