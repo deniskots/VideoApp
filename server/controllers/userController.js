@@ -1,4 +1,5 @@
 import UserModel from "../models/User.js";
+import VideoModel from "../models/Video.js";
 
 export const updateUser = async (req, res, next) => {
     if (req.params.id === req.userId) {
@@ -20,6 +21,7 @@ export const updateUser = async (req, res, next) => {
     }
 
 };
+
 export const deleteUser = async (req, res, next) => {
     if (req.params.id === req.userId) {
         try {
@@ -32,6 +34,7 @@ export const deleteUser = async (req, res, next) => {
         next(res.status(403).json({message: 'Что-то пошло не так'}))
     }
 };
+
 export const getUser = async (req, res, next) => {
     try {
         const user = await UserModel.findById(req.params.id)
@@ -41,6 +44,7 @@ export const getUser = async (req, res, next) => {
         next(err)
     }
 };
+
 export const subscribe = async (req, res, next) => {
     try {
         await UserModel.findByIdAndUpdate(req.userId, {
@@ -55,6 +59,7 @@ export const subscribe = async (req, res, next) => {
         next(err)
     }
 };
+
 export const unsubscribe = async (req, res, next) => {
     try {
         await UserModel.findByIdAndUpdate(req.userId, {
@@ -69,19 +74,28 @@ export const unsubscribe = async (req, res, next) => {
         next(err)
     }
 };
+
 export const like = async (req, res, next) => {
-
     try {
-
+        await VideoModel.findByIdAndUpdate(req.params.videoId, {
+            //этот метод не добавляет айди на каждое добавление в массив(вместо пула)
+            $addToSet: {likes: req.userId},
+            $pull: {dislikes: req.userId}
+        })
+        res.json('Вам понравилось это видео')
     } catch (err) {
         console.log(err)
         next(err)
     }
 };
 export const dislike = async (req, res, next) => {
-
     try {
-
+        await VideoModel.findByIdAndUpdate(req.params.videoId, {
+            //этот метод не добавляет айди на каждое добавление в массив(вместо пула)
+            $addToSet: {dislikes: req.userId},
+            $pull: {likes: req.userId}
+        })
+        res.json('Вам не понравилось это видео')
     } catch (err) {
         console.log(err)
         next(err)

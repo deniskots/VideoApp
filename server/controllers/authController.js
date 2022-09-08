@@ -17,7 +17,6 @@ export const register = async (req, res, next) => {
 };
 export const login = async (req, res, next) => {
     try {
-
         const user =await UserModel.findOne({email: req.body.email})
         if(!user) {
             return res.status(404).json({message: 'Sorry, этот пользователь отсутсвует'})
@@ -33,14 +32,13 @@ export const login = async (req, res, next) => {
             ...userData,
             token
         })
-
     } catch (err) {
         console.log(err)
         next(err)
     }
 };
 
-export const getMe = async (req, res, next) => {
+export const getMe = async (req, res) => {
     try {
         const user = await UserModel.findById(req.userId);
         console.log(user)
