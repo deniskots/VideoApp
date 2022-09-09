@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import {Link} from "react-router-dom";
+import Moment from "react-moment";
+import axios from "../utils/axios";
 
 
 const Container = styled.div`
@@ -46,17 +48,29 @@ const Info = styled.div`
   font-size: 14px;
   color: ${({ theme }) => theme.textSoft};
 `;
-const CardItem = () => {
+const CardItem = ({type, video}) => {
+    const [user, setUser] = useState({});
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const res = await axios.get(`/users/find/${video.userId}`)
+            setUser(res.data)
+        }
+        fetchUser();
+    }, [video.userId]);
+
     return (
             <Link to='/video/test' style={{textDecoration: 'none'}}>
-            <Container>
-                <Img/>
-                <Details>
-                    <UserImg/>
+            <Container type={type}>
+                <Img type={type} src={video.imgUrl}/>
+                <Details type={type}>
+                    <UserImg type={type} src={user.img}/>
                     <Texts>
-                        <Title>Test Video</Title>
-                        <UserName>Test Test</UserName>
-                        <Info>111111 просмотров • 2 дня назад</Info>
+                        <Title>{video.title}</Title>
+                        <UserName>{user.name}</UserName>
+                        <Info>
+                            {video.views} просмотров • <Moment date={video.createdAt} format='D MMM YYYY'/>
+                        </Info>
                     </Texts>
                 </Details>
             </Container>

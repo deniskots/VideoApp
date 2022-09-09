@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from "styled-components";
 import {Link} from "react-router-dom";
 
@@ -53,13 +53,16 @@ const More = styled.div`
 
 
 const RegisterPage = () => {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     return (
         <Container>
             <Wrapper>
                 <Title>Регистрация</Title>
-                <Input placeholder="Имя" />
-                <Input placeholder="email" />
-                <Input type="password" placeholder="Пароль" />
+                <Input placeholder="Имя" onChange={(e) => setName(e.target.value)}/>
+                <Input placeholder="email" onChange={(e) => setEmail(e.target.value)}/>
+                <Input type="password" placeholder="Пароль" onChange={(e) => setPassword(e.target.value)}/>
                 <Button>Создать</Button>
             </Wrapper>
             <More>

@@ -41,7 +41,6 @@ export const login = async (req, res, next) => {
 export const getMe = async (req, res) => {
     try {
         const user = await UserModel.findById(req.userId);
-        console.log(user)
         if(!user) {
             return res.status(404).json({message: 'Пользователь не найден'})
         };

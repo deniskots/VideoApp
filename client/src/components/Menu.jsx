@@ -72,8 +72,6 @@ const LoginBtn = styled.button`
 `;
 
 const Menu = () => {
-
-
     return (
         <Container>
             <Wrapper>
@@ -83,18 +81,25 @@ const Menu = () => {
                         Create
                     </Logo>
                 </Link>
-                <ListItem>
-                    <HomeOutlinedIcon/>
-                    Главная
-                </ListItem>
-                <ListItem>
-                    <ExploreOutlinedIcon />
-                    Новигация
-                </ListItem>
-                <ListItem>
-                    <SubscriptionsOutlinedIcon />
-                    Ваши подписки
-                </ListItem>
+                <Link to='/' style={{textDecoration: 'none', color: 'inherit'}}>
+                    <ListItem>
+                        <HomeOutlinedIcon/>
+                        Главная
+                    </ListItem>
+                </Link>
+                <Link to='/trends' style={{textDecoration: 'none', color: 'inherit'}}>
+                    <ListItem>
+                        <ExploreOutlinedIcon />
+                        Новигация
+                    </ListItem>
+                </Link>
+                <Link to='/subscripts' style={{textDecoration: 'none', color: 'inherit'}}>
+                    <ListItem>
+                        <SubscriptionsOutlinedIcon />
+                        Ваши подписки
+                    </ListItem>
+                </Link>
+
                 <Hr/>
 
                 <Login>

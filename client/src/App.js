@@ -2,12 +2,14 @@ import styled, {ThemeProvider} from "styled-components";
 import Menu from "./components/Menu";
 import Navbar from "./components/Navbar";
 import {darkThemeMode, lightThemeMode} from "./utils/ThemeMode";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Route, Routes} from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import VideoPage from "./pages/VideoPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchAuthMe, selectIsAuth} from "./redux/slices/authSlice";
 
 
 const Container = styled.div`
@@ -28,6 +30,12 @@ padding: 18px 70px;
 
 function App() {
     const [darkTheme, setDarkTheme] = useState(false);
+    const dispatch = useDispatch();
+    const isAuth = useSelector(selectIsAuth)
+
+    useEffect(() => {
+        dispatch(fetchAuthMe())
+    }, [dispatch]);
     return (
         <ThemeProvider theme={darkTheme ? darkThemeMode : lightThemeMode}>
             <Container>
@@ -37,7 +45,9 @@ function App() {
                     <Wrapper>
                         <Routes>
                             <Route path='/'>
-                                <Route index element={<HomePage/>}/>
+                                <Route index element={<HomePage type='random'/>}/>
+                                <Route path='trends' element={<HomePage type='trend'/>}/>
+                                <Route path='subscripts' element={<HomePage type='sub'/>}/>
                                 <Route path='login' element={<LoginPage/>}/>
                                 <Route path='register' element={<RegisterPage/>}/>
                                 <Route path='video'>

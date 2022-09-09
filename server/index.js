@@ -1,15 +1,16 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import cors from 'cors';
 import authRouter from './routes/auth.js';
 import userRouter from './routes/users.js';
 import commentRouter from './routes/comments.js';
 import videoRouter from './routes/videos.js';
+import cors from "./utils/cors.js";
+
 
 const app = express();
 dotenv.config();
-app.use(cors());
+app.use(cors);
 app.use(express.json());
 
 const PORT = process.env.PORT || 6600

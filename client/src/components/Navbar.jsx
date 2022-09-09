@@ -4,7 +4,10 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import ModeNightOutlinedIcon from '@mui/icons-material/ModeNightOutlined';
+import LogoutIcon from '@mui/icons-material/Logout';
 import {Link} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {logout, selectIsAuth} from "../redux/slices/authSlice";
 
 const Container = styled.div`
   height: 50px;
@@ -57,9 +60,18 @@ const NavbarBtn = styled.button`
 `;
 
 const Navbar = ({darkTheme, setDarkTheme}) => {
+    const isAuth = useSelector(selectIsAuth);
+    const dispatch = useDispatch();
+
     const handleThemeChange = () => {
         setDarkTheme(!darkTheme)
-    }
+    };
+
+    const onClickLogout = () => {
+        if(window.confirm('Вы действительно хотите выйти?')) {
+            dispatch(logout())
+        }
+    };
 
     return (
         <Container>
@@ -73,11 +85,25 @@ const Navbar = ({darkTheme, setDarkTheme}) => {
                         darkTheme ? <LightModeOutlinedIcon/> : <ModeNightOutlinedIcon/>
                     }
                 </NavbarBtn>
-                <Link to='login' style={{textDecoration: 'none', color: 'inherit'}}>
-                    <NavbarBtn>
-                        <AccountCircleOutlinedIcon/>
-                    </NavbarBtn>
-                </Link>
+                {
+                    isAuth ? (
+                        <>
+                                <NavbarBtn onClick={onClickLogout}>
+                                    <LogoutIcon/>
+                                </NavbarBtn>
+                        </>
+
+                    ) : (
+                        <>
+                            <Link to='login' style={{textDecoration: 'none', color: 'inherit'}}>
+                                <NavbarBtn >
+                                    <AccountCircleOutlinedIcon/>
+                                </NavbarBtn>
+                            </Link>
+                        </>
+                    )
+                }
+
 
             </Wrapper>
         </Container>
