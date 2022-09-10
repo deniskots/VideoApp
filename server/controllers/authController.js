@@ -28,10 +28,9 @@ export const login = async (req, res, next) => {
         const token = jwt.sign({id: user._id}, 'secret', {expiresIn: '30d'})
         //что бы не возаращать пароль
         const {password, ...userData} = user._doc
-        res.json({
-            ...userData,
-            token
-        })
+        res.cookie('access_token',token,{
+            httpOnly: true
+        }).status(200).json({...userData})
     } catch (err) {
         console.log(err)
         next(err)

@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import styled from "styled-components";
-import {Link} from "react-router-dom";
+import {Link, Navigate, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchRegister, selectIsAuth} from "../redux/slices/userSlice";
 
 const Container = styled.div`
   display: flex;
@@ -10,7 +12,7 @@ const Container = styled.div`
   color: ${({ theme }) => theme.text};
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled.form`
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -53,17 +55,32 @@ const More = styled.div`
 
 
 const RegisterPage = () => {
-    const [name, setName] = useState("");
+    const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const onSubmit = async () => {
+        try {
+            const data = await dispatch(fetchRegister({fullName, email, password}));
+            if (!data.payload) {
+                return alert('Не получилось зарегистрироваться!')
+            }
+            navigate('/')
+        }catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <Container>
-            <Wrapper>
+            <Wrapper onSubmit={(e) => e.preventDefault()}>
                 <Title>Регистрация</Title>
-                <Input placeholder="Имя" onChange={(e) => setName(e.target.value)}/>
+                <Input placeholder="Имя" onChange={(e) => setFullName(e.target.value)}/>
                 <Input placeholder="email" onChange={(e) => setEmail(e.target.value)}/>
                 <Input type="password" placeholder="Пароль" onChange={(e) => setPassword(e.target.value)}/>
-                <Button>Создать</Button>
+                <Button onClick={onSubmit}>Создать</Button>
             </Wrapper>
             <More>
                  <Link to='/login'> Уже есть аккаунт?</Link>

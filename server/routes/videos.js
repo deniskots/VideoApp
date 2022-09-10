@@ -1,10 +1,10 @@
 import {Router} from 'express';
 import {
-    addView,
+    addView, allVideos,
     createVideo,
     deleteVideo,
     getVideo,
-    randomVideos, search, subscribedVideos, tagVideos,
+    subscribedVideos, tagVideos, titleVideos,
     trendVideos,
     updateVideo
 } from "../controllers/videoController.js";
@@ -16,12 +16,15 @@ const router = new Router();
 router.post('/',checkAuth, createVideo )
 router.delete('/:id',checkAuth, deleteVideo )
 router.put('/:id',checkAuth, updateVideo )
+
 router.get('/find/:id', getVideo )
 router.put('/view/:id', addView )
+
+router.get('/all', allVideos)
 router.get('/trend', trendVideos)
-router.get('/random', randomVideos)
 router.get("/tags", tagVideos)
-router.get("/search", search)
+
+router.get("/search", titleVideos)
 router.get('/sub',checkAuth, subscribedVideos )
 
 export default router;

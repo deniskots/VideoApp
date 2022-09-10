@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styled from "styled-components";
 import {Link, Navigate} from "react-router-dom";
 import axios from "../utils/axios";
-import {fetchLogin, selectIsAuth} from "../redux/slices/authSlice";
+import {fetchLogin, selectIsAuth} from "../redux/slices/userSlice";
 import {useDispatch, useSelector} from "react-redux";
 
 const Container = styled.div`
@@ -68,9 +68,6 @@ const LoginPage = () => {
         const data = await dispatch(fetchLogin({email, password}));
         if (!data.payload) {
             return alert('Не получилось!')
-        }
-        if ('token' in data.payload) {
-            window.localStorage.setItem('token', data.payload.token)
         }
     }
 

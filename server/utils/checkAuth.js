@@ -1,8 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 export default (req, res, next) => {
-    //токен из заголовка авторизат и отделим токен
-    const token = (req.headers.authorization || '').split(' ')[1]
+    const token = req.cookies.access_token;
     if (token) {
         try {
             //расшифровка токена и достаем айди

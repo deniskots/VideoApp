@@ -9,7 +9,8 @@ import VideoPage from "./pages/VideoPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchAuthMe, selectIsAuth} from "./redux/slices/authSlice";
+import {selectIsAuth} from "./redux/slices/userSlice";
+
 
 
 const Container = styled.div`
@@ -33,9 +34,6 @@ function App() {
     const dispatch = useDispatch();
     const isAuth = useSelector(selectIsAuth)
 
-    useEffect(() => {
-        dispatch(fetchAuthMe())
-    }, [dispatch]);
     return (
         <ThemeProvider theme={darkTheme ? darkThemeMode : lightThemeMode}>
             <Container>
@@ -45,9 +43,9 @@ function App() {
                     <Wrapper>
                         <Routes>
                             <Route path='/'>
-                                <Route index element={<HomePage type='random'/>}/>
+                                <Route index element={<HomePage type='all'/>}/>
                                 <Route path='trends' element={<HomePage type='trend'/>}/>
-                                <Route path='subscripts' element={<HomePage type='sub'/>}/>
+                                <Route path='sub' element={<HomePage type='sub'/>}/>
                                 <Route path='login' element={<LoginPage/>}/>
                                 <Route path='register' element={<RegisterPage/>}/>
                                 <Route path='video'>

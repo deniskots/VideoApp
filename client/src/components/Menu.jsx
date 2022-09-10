@@ -5,6 +5,7 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ExploreOutlinedIcon from "@mui/icons-material/ExploreOutlined";
 import SubscriptionsOutlinedIcon from "@mui/icons-material/SubscriptionsOutlined";
 import {Link} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 
 
@@ -72,6 +73,7 @@ const LoginBtn = styled.button`
 `;
 
 const Menu = () => {
+    const currentUser = useSelector(state => state.user.data);
     return (
         <Container>
             <Wrapper>
@@ -93,21 +95,24 @@ const Menu = () => {
                         Новигация
                     </ListItem>
                 </Link>
-                <Link to='/subscripts' style={{textDecoration: 'none', color: 'inherit'}}>
+                <Link to='/sub' style={{textDecoration: 'none', color: 'inherit'}}>
                     <ListItem>
                         <SubscriptionsOutlinedIcon />
                         Ваши подписки
                     </ListItem>
                 </Link>
-
-                <Hr/>
-
-                <Login>
-                    Для полного использования необходимо зайти в свой профиль
-                    <Link to='login' style={{textDecoration: 'none', color: 'inherit'}}>
-                        <LoginBtn> Ввойти</LoginBtn>
-                    </Link>
-                </Login>
+                {
+                    !currentUser &&
+                    <>
+                        <Hr/>
+                        <Login>
+                            Для полного использования необходимо зайти в свой профиль
+                            <Link to='login' style={{textDecoration: 'none', color: 'inherit'}}>
+                                <LoginBtn> Ввойти</LoginBtn>
+                            </Link>
+                        </Login>
+                    </>
+                }
             </Wrapper>
         </Container>
     );

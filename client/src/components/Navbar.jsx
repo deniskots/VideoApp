@@ -5,9 +5,10 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import ModeNightOutlinedIcon from '@mui/icons-material/ModeNightOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {logout, selectIsAuth} from "../redux/slices/authSlice";
+import {logout} from "../redux/slices/userSlice";
 
 const Container = styled.div`
   height: 50px;
@@ -42,6 +43,7 @@ const SearchPart = styled.div`
 const SearchInput = styled.input`
   border: none;
   background-color: transparent;
+
   &:focus {
     outline: none;
   }
@@ -59,8 +61,23 @@ const NavbarBtn = styled.button`
   gap: 5px;
 `;
 
+const User = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  color: ${({theme}) => theme.text};
+`;
+const Avatar = styled.img`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: coral;
+`;
+
+
 const Navbar = ({darkTheme, setDarkTheme}) => {
-    const isAuth = useSelector(selectIsAuth);
+    const currentUser = useSelector(state => state.user.data);
     const dispatch = useDispatch();
 
     const handleThemeChange = () => {
@@ -68,7 +85,7 @@ const Navbar = ({darkTheme, setDarkTheme}) => {
     };
 
     const onClickLogout = () => {
-        if(window.confirm('Вы действительно хотите выйти?')) {
+        if (window.confirm('Вы действительно хотите выйти?')) {
             dispatch(logout())
         }
     };
@@ -80,29 +97,34 @@ const Navbar = ({darkTheme, setDarkTheme}) => {
                     <SearchInput placeholder='Поиск'></SearchInput>
                     <SearchOutlinedIcon/>
                 </SearchPart>
+
+                {
+                    currentUser ? (
+                        <User>
+                            <FileUploadIcon style={{color: 'red'}}/>
+                            <Avatar/>
+                            {currentUser.name}
+                            <NavbarBtn onClick={onClickLogout}>
+                                <LogoutIcon/>
+                            </NavbarBtn>
+                        </User>
+                    ) : (
+                        <>
+                            <Link to='login' style={{textDecoration: 'none', color: 'inherit'}}>
+                                <NavbarBtn>
+                                    <AccountCircleOutlinedIcon/>
+                                </NavbarBtn>
+                            </Link>
+                        </>
+
+                    )
+
+                }
                 <NavbarBtn onClick={handleThemeChange}>
                     {
                         darkTheme ? <LightModeOutlinedIcon/> : <ModeNightOutlinedIcon/>
                     }
                 </NavbarBtn>
-                {
-                    isAuth ? (
-                        <>
-                                <NavbarBtn onClick={onClickLogout}>
-                                    <LogoutIcon/>
-                                </NavbarBtn>
-                        </>
-
-                    ) : (
-                        <>
-                            <Link to='login' style={{textDecoration: 'none', color: 'inherit'}}>
-                                <NavbarBtn >
-                                    <AccountCircleOutlinedIcon/>
-                                </NavbarBtn>
-                            </Link>
-                        </>
-                    )
-                }
 
 
             </Wrapper>

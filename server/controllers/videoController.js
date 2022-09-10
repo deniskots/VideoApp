@@ -64,9 +64,13 @@ export const addView = async (req, res, next) => {
         next(e)
     }
 }
-export const randomVideos = async (req, res, next) => {
+export const allVideos = async (req, res, next) => {
     try {
-        const videos = await VideoModel.aggregate([{$sample: {size: 10}}])
+        // const videos = await VideoModel.aggregate([{$sample: {size: 10}}])
+        const videos = await VideoModel.find()
+        if (!videos) {
+            return res.json({message: 'Публикаций нет'})
+        }
         res.json(videos)
     } catch (e) {
         console.log(e)
@@ -93,7 +97,7 @@ export const tagVideos = async (req, res, next) => {
         next(e)
     }
 }
-export const search = async (req, res, next) => {
+export const titleVideos = async (req, res, next) => {
     try {
         const query = req.query.q
         const videos = await VideoModel.find({
