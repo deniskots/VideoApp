@@ -7,8 +7,8 @@ export const darkThemeMode = {
 }
 
 export const lightThemeMode = {
-    bg: '#dcdad8',
-    bgMenu: '#cbcbcb',
+    bg: '#ffffff',
+    bgMenu: '#ffffff',
     text: 'black',
     textSoft: 'black',
     soft: '#9a9a9a'

@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from "styled-components";
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import ModeNightOutlinedIcon from '@mui/icons-material/ModeNightOutlined';
@@ -9,26 +8,28 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../redux/slices/userSlice";
+import logo from "../assets/img/logo.svg";
 
 const Container = styled.div`
-  height: 50px;
+  //height: 50px;
+  padding: 5px 0px;
   position: sticky;
   top: 0;
+  border-bottom: 1px solid #949292;
   background-color: ${({theme}) => theme.bgMenu};
 `;
 
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   height: 100%;
-  padding: 0px 20px;
+  padding: 5px 20px;
   position: relative;
 `;
 
 const SearchPart = styled.div`
   width: 40%;
-  position: absolute;
   left: 0;
   right: 0;
   margin: auto;
@@ -61,20 +62,46 @@ const NavbarBtn = styled.button`
   gap: 5px;
 `;
 
-const User = styled.div`
+const UserPart = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
   font-weight: 500;
   color: ${({theme}) => theme.text};
 `;
-const Avatar = styled.img`
+const UserImg = styled.img`
   width: 32px;
   height: 32px;
   border-radius: 50%;
   background-color: coral;
 `;
 
+const Logo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+  
+`;
+
+const LogoImg = styled.img`
+  width: 40px;
+`;
+
+const Login = styled.div``;
+
+const LoginBtn = styled.button`
+  padding: 5px 15px;
+  background-color: transparent;
+  border: 1px solid #ff3e5b;
+  color: #ff3e5b;
+  border-radius: 3px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+`;
 
 const Navbar = ({darkTheme, setDarkTheme}) => {
     const currentUser = useSelector(state => state.user.data);
@@ -92,7 +119,14 @@ const Navbar = ({darkTheme, setDarkTheme}) => {
 
     return (
         <Container>
+
             <Wrapper>
+                <Link to='/' style={{textDecoration: 'none', color: 'inherit'}}>
+                    <Logo>
+                        <LogoImg src={logo}/>
+                        Create
+                    </Logo>
+                </Link>
                 <SearchPart>
                     <SearchInput placeholder='Поиск'></SearchInput>
                     <SearchOutlinedIcon/>
@@ -100,33 +134,29 @@ const Navbar = ({darkTheme, setDarkTheme}) => {
 
                 {
                     currentUser ? (
-                        <User>
+                        <UserPart>
                             <FileUploadIcon style={{color: 'red'}}/>
-                            <Avatar/>
+                            <UserImg/>
                             {currentUser.name}
                             <NavbarBtn onClick={onClickLogout}>
                                 <LogoutIcon/>
                             </NavbarBtn>
-                        </User>
+                        </UserPart>
                     ) : (
                         <>
-                            <Link to='login' style={{textDecoration: 'none', color: 'inherit'}}>
-                                <NavbarBtn>
-                                    <AccountCircleOutlinedIcon/>
-                                </NavbarBtn>
-                            </Link>
+                            <Login>
+                                <Link to='login' style={{textDecoration: 'none', color: 'inherit'}}>
+                                    <LoginBtn> Ввойти</LoginBtn>
+                                </Link>
+                            </Login>
                         </>
-
                     )
-
                 }
                 <NavbarBtn onClick={handleThemeChange}>
                     {
                         darkTheme ? <LightModeOutlinedIcon/> : <ModeNightOutlinedIcon/>
                     }
                 </NavbarBtn>
-
-
             </Wrapper>
         </Container>
     );

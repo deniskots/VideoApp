@@ -1,42 +1,22 @@
 import React from 'react';
 import styled from "styled-components";
-import logo from '../assets/img/logo.svg'
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ExploreOutlinedIcon from "@mui/icons-material/ExploreOutlined";
 import SubscriptionsOutlinedIcon from "@mui/icons-material/SubscriptionsOutlined";
 import {Link} from "react-router-dom";
-import {useSelector} from "react-redux";
-
-
 
 const Container = styled.div`
-  flex: 1;
-  background-color: ${({ theme }) => theme.bgMenu};
-  height: 100vh;
-  position: sticky;
-  top: 0;
+  margin-top: 5px;
+  margin-bottom: 25px;
   font-size: 16px;
-  color: ${({ theme }) => theme.text};
+  color: ${({theme}) => theme.text};
 `;
 
 const Wrapper = styled.div`
-  padding: 10px 25px;
-`;
-
-const Logo = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-weight: bold;
-  margin-bottom: 20px;
-`;
-
-const LogoImg = styled.img`
-  width: 40px;
-`;
-
-const List = styled.div`
-  margin-top: 70px;;
+  justify-content: center;
+  gap: 30px;
 `;
 
 const ListItem = styled.div`
@@ -44,45 +24,18 @@ const ListItem = styled.div`
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  padding: 10px 0px;
-  
+  padding: 8px 8px;
   &:hover {
-    background-color: ${({ theme }) => theme.soft};
+    border-radius: 5px;
+    background-color: ${({theme}) => theme.soft};
   }
 `;
 
-const Hr = styled.hr`
-  margin: 15px 0px;
-  border: 0.5px solid ${({ theme }) => theme.soft};
-`;
-
-const Login = styled.div``;
-
-const LoginBtn = styled.button`
-  padding: 5px 15px;
-  background-color: transparent;
-  border: 1px solid #ff3e5b;
-  color: #ff3e5b;
-  border-radius: 3px;
-  font-weight: 500;
-  margin-top: 10px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-`;
 
 const Menu = () => {
-    const currentUser = useSelector(state => state.user.data);
     return (
         <Container>
             <Wrapper>
-                <Link to='/' style={{textDecoration: 'none', color: 'inherit'}}>
-                    <Logo>
-                        <LogoImg src={logo}/>
-                        Create
-                    </Logo>
-                </Link>
                 <Link to='/' style={{textDecoration: 'none', color: 'inherit'}}>
                     <ListItem>
                         <HomeOutlinedIcon/>
@@ -91,28 +44,16 @@ const Menu = () => {
                 </Link>
                 <Link to='/trends' style={{textDecoration: 'none', color: 'inherit'}}>
                     <ListItem>
-                        <ExploreOutlinedIcon />
+                        <ExploreOutlinedIcon/>
                         Новигация
                     </ListItem>
                 </Link>
                 <Link to='/sub' style={{textDecoration: 'none', color: 'inherit'}}>
                     <ListItem>
-                        <SubscriptionsOutlinedIcon />
+                        <SubscriptionsOutlinedIcon/>
                         Ваши подписки
                     </ListItem>
                 </Link>
-                {
-                    !currentUser &&
-                    <>
-                        <Hr/>
-                        <Login>
-                            Для полного использования необходимо зайти в свой профиль
-                            <Link to='login' style={{textDecoration: 'none', color: 'inherit'}}>
-                                <LoginBtn> Ввойти</LoginBtn>
-                            </Link>
-                        </Login>
-                    </>
-                }
             </Wrapper>
         </Container>
     );

@@ -2,15 +2,12 @@ import styled, {ThemeProvider} from "styled-components";
 import Menu from "./components/Menu";
 import Navbar from "./components/Navbar";
 import {darkThemeMode, lightThemeMode} from "./utils/ThemeMode";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {Route, Routes} from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import VideoPage from "./pages/VideoPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import {useDispatch, useSelector} from "react-redux";
-import {selectIsAuth} from "./redux/slices/userSlice";
-
 
 
 const Container = styled.div`
@@ -19,28 +16,27 @@ const Container = styled.div`
 
 const Main = styled.div`
   flex: 8;
-  background-color: ${({ theme }) => theme.bg};
-  color: ${({ theme }) => theme.text};
+  background-color: ${({theme}) => theme.bg};
+  color: ${({theme}) => theme.text};
 
 `;
 
 const Wrapper = styled.div`
-padding: 18px 70px;
+  padding: 5px 70px;
+  height: 100vh;
 `;
 
 
 function App() {
     const [darkTheme, setDarkTheme] = useState(false);
-    const dispatch = useDispatch();
-    const isAuth = useSelector(selectIsAuth)
 
     return (
         <ThemeProvider theme={darkTheme ? darkThemeMode : lightThemeMode}>
             <Container>
-                <Menu/>
                 <Main>
                     <Navbar darkTheme={darkTheme} setDarkTheme={setDarkTheme}/>
                     <Wrapper>
+                        <Menu/>
                         <Routes>
                             <Route path='/'>
                                 <Route index element={<HomePage type='all'/>}/>

@@ -4,9 +4,14 @@ import CardItem from "../components/CardItem";
 import axios from "../utils/axios";
 
 const Container = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+  /*display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
+  flex-wrap: wrap;*/
 `;
 
 
@@ -24,7 +29,6 @@ const HomePage = ({type}) => {
     return (
         <Container>
             {videos.map((video) => <CardItem key={video.id} video={video}/>)}
-
         </Container>
     );
 };

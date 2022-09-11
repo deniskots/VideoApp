@@ -18,7 +18,7 @@ const Wrapper = styled.form`
   flex-direction: column;
   background-color: transparent;
   border: 1px solid ${({ theme }) => theme.soft};
-  padding: 20px 50px;
+  padding: 60px 140px;
   gap: 10px;
 `;
 
@@ -30,7 +30,7 @@ const Title = styled.h1`
 const Input = styled.input`
   border: 1px solid ${({ theme }) => theme.soft};
   border-radius: 3px;
-  padding: 10px;
+  padding: 15px;
   background-color: transparent;
   width: 100%;
   color: ${({ theme }) => theme.text};
