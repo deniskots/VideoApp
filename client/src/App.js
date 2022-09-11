@@ -12,13 +12,13 @@ import RegisterPage from "./pages/RegisterPage";
 
 const Container = styled.div`
   display: flex;
+  width: 100%;
 `;
 
 const Main = styled.div`
   flex: 8;
   background-color: ${({theme}) => theme.bg};
   color: ${({theme}) => theme.text};
-
 `;
 
 const Wrapper = styled.div`
@@ -45,7 +45,7 @@ function App() {
                                 <Route path='login' element={<LoginPage/>}/>
                                 <Route path='register' element={<RegisterPage/>}/>
                                 <Route path='video'>
-                                    <Route path=':id' element={<VideoPage/>}></Route>
+                                    <Route path=':id' element={<VideoPage/>}/>
                                 </Route>
                             </Route>
                         </Routes>

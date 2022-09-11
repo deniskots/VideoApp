@@ -11,10 +11,8 @@ import {logout} from "../redux/slices/userSlice";
 import logo from "../assets/img/logo.svg";
 
 const Container = styled.div`
-  //height: 50px;
+  width: 100%;
   padding: 5px 0px;
-  position: sticky;
-  top: 0;
   border-bottom: 1px solid #949292;
   background-color: ${({theme}) => theme.bgMenu};
 `;
@@ -137,7 +135,7 @@ const Navbar = ({darkTheme, setDarkTheme}) => {
                         <UserPart>
                             <FileUploadIcon style={{color: 'red'}}/>
                             <UserImg/>
-                            {currentUser.name}
+                            {currentUser.fullName}
                             <NavbarBtn onClick={onClickLogout}>
                                 <LogoutIcon/>
                             </NavbarBtn>

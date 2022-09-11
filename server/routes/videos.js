@@ -4,7 +4,7 @@ import {
     createVideo,
     deleteVideo,
     getVideo,
-    subscribedVideos, tagVideos, titleVideos,
+    subVideos, tagVideos, titleVideos,
     trendVideos,
     updateVideo
 } from "../controllers/videoController.js";
@@ -25,6 +25,6 @@ router.get('/trend', trendVideos)
 router.get("/tags", tagVideos)
 
 router.get("/search", titleVideos)
-router.get('/sub',checkAuth, subscribedVideos )
+router.get('/sub',checkAuth, subVideos )
 
 export default router;

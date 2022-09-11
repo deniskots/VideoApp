@@ -47,6 +47,5 @@
       "last 1 safari version"
     ]
   },
-  "main": "index.js",
-  "license": "MIT"
+  "proxy": "http://localhost:6600/api/"
 }

@@ -9,6 +9,7 @@ export const register = async (req, res, next) => {
         const passwordHash = await bcrypt.hash(password, salt)
         const newUser = new UserModel({...req.body, password: passwordHash});
         await newUser.save();
+        console.log()
         res.status(200).send("Пользователь создан!");
     } catch (err) {
         console.log(err)
@@ -25,12 +26,15 @@ export const login = async (req, res, next) => {
         if(!isValidPassword) {
             return res.status(400).json({message: 'Sorry, неверный логин или пароль'})
         }
-        const token = jwt.sign({id: user._id}, 'secret', {expiresIn: '30d'})
+        const token = jwt.sign({id: user._id}, 'secret')
         //что бы не возаращать пароль
         const {password, ...userData} = user._doc
-        res.cookie('access_token',token,{
-            httpOnly: true
-        }).status(200).json({...userData})
+        res
+            .cookie("access_token", token, {
+                httpOnly: true,
+            })
+            .status(200)
+            .json(userData);
     } catch (err) {
         console.log(err)
         next(err)

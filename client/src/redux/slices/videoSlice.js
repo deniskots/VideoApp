@@ -1,8 +1,14 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import axios from "../../utils/axios";
+import axios from "axios";
+
+
+export const fetchVideos = createAsyncThunk('videos/fetchVideos', async (type) => {
+    const {data} = await axios.get(`/videos/${type}`);
+    return data;
+})
 
 const initialState = {
-    data: null,
+    video: [],
     loading: false
 };
 
@@ -10,7 +16,8 @@ const initialState = {
 const videoSlice = createSlice({
     name: 'video',
     initialState,
-    reducers: {}
+    reducers: {},
+
 })
 
 export const videoReducer = videoSlice.reducer;

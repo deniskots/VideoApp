@@ -109,20 +109,20 @@ export const titleVideos = async (req, res, next) => {
         next(e)
     }
 }
-export const subscribedVideos = async (req, res, next) => {
+export const subVideos = async (req, res, next) => {
     try {
-        const user = await UserModel.findById(req.userId)
-        const subscribedChannel = user.subscribedUsers
+        const id = req.userId
+        const user = await UserModel.findById(id)
+        const subChannel = user.subscribedUsers
         const list = await Promise.all(
-            subscribedChannel.map((item) => {
-                return VideoModel.find({userId: item})
+            subChannel.map( async (itemId) => {
+                return await VideoModel.find({userId: itemId})
             })
         )
         //возращаю массив с обьеденненными в него массивы
         //и сортирую для показа последнего создаваемого элемента массива
-        res.json(list.flat().sort((a,b) => b.createdAt - a.createdAt))
+        res.status(200).json(list.flat().sort((a, b) => b.createdAt - a.createdAt))
     } catch (e) {
         console.log(e)
-        next(e)
     }
 }

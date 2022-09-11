@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import {Link} from "react-router-dom";
 import Moment from "react-moment";
-import axios from "../utils/axios";
+import axios from "axios";
+
 
 
 const Container = styled.div`
@@ -67,7 +68,7 @@ const CardItem = ({type, video}) => {
                     <UserImg type={type} src={user.img}/>
                     <Texts>
                         <Title>{video.title}</Title>
-                        <UserName>{user.name}</UserName>
+                        <UserName>{user.fullName}</UserName>
                         <Info>
                             {video.views} просмотров • <Moment date={video.createdAt} format='D MMM YYYY'/>
                         </Info>
