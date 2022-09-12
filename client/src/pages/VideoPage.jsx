@@ -1,9 +1,16 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import SentimentVerySatisfiedOutlinedIcon from '@mui/icons-material/SentimentVerySatisfiedOutlined';
+import InsertEmoticonTwoToneIcon from '@mui/icons-material/InsertEmoticonTwoTone';
 import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
 import SentimentDissatisfiedOutlinedIcon from '@mui/icons-material/SentimentDissatisfiedOutlined';
+import SentimentDissatisfiedTwoToneIcon from '@mui/icons-material/SentimentDissatisfiedTwoTone';
 import Comments from "../components/Comments";
+import {useDispatch, useSelector} from "react-redux";
+import {useLocation, useParams} from "react-router-dom";
+import axios from "axios";
+import {dislike, fetchSuccess, like} from "../redux/slices/videoSlice";
+import Moment from "react-moment";
 
 const Container = styled.div`
   display: flex;
@@ -23,7 +30,7 @@ const Title = styled.h1`
   font-weight: 400;
   margin-top: 20px;
   margin-bottom: 10px;
-  color: ${({ theme }) => theme.text};
+  color: ${({theme}) => theme.text};
 `;
 
 const Details = styled.div`
@@ -33,13 +40,13 @@ const Details = styled.div`
 `;
 
 const Info = styled.span`
-  color: ${({ theme }) => theme.textSoft};
+  color: ${({theme}) => theme.textSoft};
 `;
 
 const Buttons = styled.div`
   display: flex;
   gap: 20px;
-  color: ${({ theme }) => theme.text};
+  color: ${({theme}) => theme.text};
 `;
 
 const Button = styled.div`
@@ -55,7 +62,7 @@ const Recommend = styled.div`
 
 const Hr = styled.hr`
   margin: 20px 0px;
-  border: 0.5px solid ${({ theme }) => theme.soft};
+  border: 0.5px solid ${({theme}) => theme.soft};
 `;
 
 const User = styled.div`
@@ -77,7 +84,7 @@ const Image = styled.img`
 const UserDetail = styled.div`
   display: flex;
   flex-direction: column;
-  color: ${({ theme }) => theme.text};
+  color: ${({theme}) => theme.text};
 `;
 
 const UserName = styled.span`
@@ -87,7 +94,7 @@ const UserName = styled.span`
 const UserCounter = styled.span`
   margin-top: 5px;
   margin-bottom: 20px;
-  color: ${({ theme }) => theme.textSoft};
+  color: ${({theme}) => theme.textSoft};
   font-size: 12px;
 `;
 
@@ -108,6 +115,39 @@ const Subscribe = styled.button`
 
 
 const VideoPage = () => {
+    const [channel, setChannel] = useState({});
+    const currentUser = useSelector(state => state.user.data);
+    const {data} = useSelector(state => state.video);
+    const dispatch = useDispatch();
+    //достать айди
+    //const {id} = useParams()
+    const path = useLocation().pathname.split('/')[2]
+
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const resVideos = await axios.get(`/videos/find/${path}`)
+                const resChannels = await axios.get(`/users/find/${resVideos.data.userId}`);
+                setChannel(resChannels.data)
+                dispatch(fetchSuccess(resVideos.data));
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        fetchData()
+    }, [path, dispatch]);
+
+    const handleLike = async () => {
+        await axios.put(`/users/like/${data._id}`)
+        dispatch(like(currentUser._id))
+    }
+    const handleDislike = async () => {
+        await axios.put(`/users/dislike/${data._id}`)
+        dispatch(dislike(currentUser._id))
+    }
+
     return (
         <Container>
             <Content>
@@ -122,27 +162,43 @@ const VideoPage = () => {
                         allowFullScreen
                     ></iframe>
                 </VideoWrapper>
-                <Title> Название видео</Title>
+                <Title> {data.title}</Title>
                 <Details>
-                    <Info> кол-во просмотров</Info>
+                    <Info>
+                        {data.views} просмотров •
+                        <Moment date={data.createdAt} format='D MMM YYYY'/>
+                    </Info>
                     <Buttons>
-                        <Button><SentimentVerySatisfiedOutlinedIcon/></Button>
-                        <Button><SentimentDissatisfiedOutlinedIcon/></Button>
+                        <Button onClick={handleLike}>
+                            {
+                                data.likes?.includes(currentUser._id) ? (
+                                    <InsertEmoticonTwoToneIcon/>
+                                ) : (
+                                    <SentimentVerySatisfiedOutlinedIcon/>
+                                )}
+                            {data.likes?.length}
+                        </Button>
+                        <Button onClick={handleDislike}>
+                            {
+                                data.dislikes?.includes(currentUser._id) ? (
+                                    <SentimentDissatisfiedTwoToneIcon/>
+                                ) : (
+                                    <SentimentDissatisfiedOutlinedIcon/>
+                                )}
+                            {data.dislikes?.length}
+                        </Button>
                         <Button><ReplyOutlinedIcon/></Button>
                     </Buttons>
                 </Details>
                 <Hr/>
                 <User>
                     <UserInfo>
-                        <Image />
+                        <Image src={channel.img}/>
                         <UserDetail>
-                            <UserName>Test</UserName>
-                            <UserCounter>200K subscribers</UserCounter>
+                            <UserName>{channel.fullName}</UserName>
+                            <UserCounter>{channel.subscribers} подписчиков</UserCounter>
                             <Description>
-                                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                                Doloribus laborum delectus unde quaerat dolore culpa sit aliquam
-                                at. Vitae facere ipsum totam ratione exercitationem. Suscipit
-                                animi accusantium dolores ipsam ut.
+                                {data.desc}
                             </Description>
                         </UserDetail>
                     </UserInfo>
@@ -152,9 +208,7 @@ const VideoPage = () => {
             <Recommend>
                 Коментарии:
                 <Comments/>
-
             </Recommend>
-
         </Container>
     );
 };

@@ -60,9 +60,6 @@ const LoginPage = () => {
     const dispatch = useDispatch();
     const isAuth = useSelector(selectIsAuth)
 
-    console.log(isAuth)
-
-
     const onSubmit = async () => {
         const data = await dispatch(fetchLogin({email, password}));
         if (!data.payload) {

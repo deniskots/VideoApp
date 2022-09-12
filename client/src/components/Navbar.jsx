@@ -102,7 +102,7 @@ const LoginBtn = styled.button`
 `;
 
 const Navbar = ({darkTheme, setDarkTheme}) => {
-    const currentUser = useSelector(state => state.user.data);
+    const {data} = useSelector(state => state.user);
     const dispatch = useDispatch();
 
     const handleThemeChange = () => {
@@ -131,11 +131,11 @@ const Navbar = ({darkTheme, setDarkTheme}) => {
                 </SearchPart>
 
                 {
-                    currentUser ? (
+                    data ? (
                         <UserPart>
                             <FileUploadIcon style={{color: 'red'}}/>
                             <UserImg/>
-                            {currentUser.fullName}
+                            {data.fullName}
                             <NavbarBtn onClick={onClickLogout}>
                                 <LogoutIcon/>
                             </NavbarBtn>
