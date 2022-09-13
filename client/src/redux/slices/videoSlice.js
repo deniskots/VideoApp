@@ -13,7 +13,6 @@ const initialState = {
     error: false
 };
 
-
 const videoSlice = createSlice({
     name: 'video',
     initialState,

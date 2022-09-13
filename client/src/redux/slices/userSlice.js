@@ -25,6 +25,17 @@ const userSlice = createSlice({
         reducers: {
             logout: (state) => {
                 state.data = null
+            },
+            sub: (state, action) => {
+                if (state.data.subscribedUsers.includes(action.payload)) {
+                    state.data.subscribedUsers.splice(
+                        state.data.subscribedUsers.findIndex(
+                            (channelId) => channelId === action.payload
+                        ),1
+                    )
+                }else{
+                    state.data.subscribedUsers.push(action.payload)
+                }
             }
         },
         extraReducers: {
@@ -57,5 +68,5 @@ const userSlice = createSlice({
 );
 
 export const selectIsAuth = (state) => Boolean(state.user.data);
-export const {logout} = userSlice.actions
+export const {logout, sub} = userSlice.actions
 export const userReducer = userSlice.reducer;

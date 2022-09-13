@@ -11,6 +11,7 @@ import {useLocation, useParams} from "react-router-dom";
 import axios from "axios";
 import {dislike, fetchSuccess, like} from "../redux/slices/videoSlice";
 import Moment from "react-moment";
+import {sub} from "../redux/slices/userSlice";
 
 const Container = styled.div`
   display: flex;
@@ -24,6 +25,12 @@ const Content = styled.div`
 
 
 const VideoWrapper = styled.div``;
+
+const VideoFrame = styled.video`
+  max-height: 720px;
+  width: 100%;
+  object-fit: cover;
+`;
 
 const Title = styled.h1`
   font-size: 18px;
@@ -147,20 +154,18 @@ const VideoPage = () => {
         await axios.put(`/users/dislike/${data._id}`)
         dispatch(dislike(currentUser._id))
     }
+    const handleSub = async () => {
+        currentUser.subscribedUsers.includes(channel._id)
+            ? await axios.put(`/users/unsub/${channel._id}`)
+            : await axios.put(`/users/sub/${channel._id}`)
+        dispatch(sub(channel._id))
+    }
 
     return (
         <Container>
             <Content>
                 <VideoWrapper>
-                    <iframe
-                        width="100%"
-                        height="400"
-                        src="https://www.youtube.com/embed/k3Vfj-e1Ma4"
-                        title="YouTube video player"
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                    ></iframe>
+                    <VideoFrame src={data.videoUrl}/>
                 </VideoWrapper>
                 <Title> {data.title}</Title>
                 <Details>
@@ -202,12 +207,17 @@ const VideoPage = () => {
                             </Description>
                         </UserDetail>
                     </UserInfo>
-                    <Subscribe>Добавить</Subscribe>
+                    <Subscribe onClick={handleSub}>
+                        {
+                            currentUser.subscribedUsers?.includes(channel._id) ? 'Вы уже добавили' : 'Добавить'
+                        }
+                    </Subscribe>
                 </User>
-            </Content>
-            <Recommend>
                 Коментарии:
                 <Comments/>
+            </Content>
+            <Recommend>
+
             </Recommend>
         </Container>
     );

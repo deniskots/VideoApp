@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
+import Moment from "react-moment";
+import axios from "axios";
 
 const Container = styled.div`
   display: flex;
@@ -37,17 +39,23 @@ const Text = styled.span`
 `;
 
 
-const Comment = () => {
+const Comment = ({comment}) => {
+    /*const [channel, setChannel] = useState({});
+    useEffect(() => {
+        const fetchComment = async () => {
+            const res = await axios.get(`/users/find/${comment.userId}`);
+            setChannel(res.data)
+        };
+        fetchComment();
+
+    }, [comment.userId]);*/
     return (
         <Container>
-            <UserAvatar/>
+            <UserAvatar asda/>
             <Details>
-                <Name> Hector Stalin <Date>1 день назад</Date></Name>
+                <Name>asdas {/*{channel.fullName} <Date><Moment date={channel.createdAt} format='D MMM YYYY'/></Date>*/}</Name>
                 <Text>
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vel, ex
-                    laboriosam ipsam aliquam voluptatem perferendis provident modi, sequi
-                    tempore reiciendis quod, optio ullam cumque? Quidem numquam sint
-                    mollitia totam reiciendis?
+                    {/*{comment.desc}*/}
                 </Text>
             </Details>
         </Container>
