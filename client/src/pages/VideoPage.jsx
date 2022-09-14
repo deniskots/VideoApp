@@ -17,14 +17,22 @@ const Container = styled.div`
   display: flex;
   gap: 20px;
   padding: 30px 0px;
+  @media (max-width: 1400px) {
+    display: flex;
+    flex-direction: column;
+  };
+  @media (max-width: 1200px) {
+
+  }
 `;
 
 const Content = styled.div`
-  flex: 3;
+  flex: 5;
 `;
 
 
-const VideoWrapper = styled.div``;
+const VideoWrapper = styled.div`
+flex: 5`;
 
 const VideoFrame = styled.video`
   max-height: 720px;
@@ -124,13 +132,11 @@ const Subscribe = styled.button`
 const VideoPage = () => {
     const [channel, setChannel] = useState({});
     const currentUser = useSelector(state => state.user.data);
-    const {data} = useSelector(state => state.video);
+    const currentVideo = useSelector(state => state.video.data);
     const dispatch = useDispatch();
     //достать айди
     //const {id} = useParams()
     const path = useLocation().pathname.split('/')[2]
-
-
 
     useEffect(() => {
         const fetchData = async () => {
@@ -147,11 +153,11 @@ const VideoPage = () => {
     }, [path, dispatch]);
 
     const handleLike = async () => {
-        await axios.put(`/users/like/${data._id}`)
+        await axios.put(`/users/like/${currentVideo._id}`)
         dispatch(like(currentUser._id))
     }
     const handleDislike = async () => {
-        await axios.put(`/users/dislike/${data._id}`)
+        await axios.put(`/users/dislike/${currentVideo._id}`)
         dispatch(dislike(currentUser._id))
     }
     const handleSub = async () => {
@@ -161,36 +167,37 @@ const VideoPage = () => {
         dispatch(sub(channel._id))
     }
 
+
     return (
         <Container>
             <Content>
                 <VideoWrapper>
-                    <VideoFrame src={data.videoUrl}/>
+                    <VideoFrame src={currentVideo.videoUrl}/>
                 </VideoWrapper>
-                <Title> {data.title}</Title>
+                <Title> {currentVideo.title}</Title>
                 <Details>
                     <Info>
-                        {data.views} просмотров •
-                        <Moment date={data.createdAt} format='D MMM YYYY'/>
+                        {currentVideo.views} просмотров •
+                        <Moment date={currentVideo.createdAt} format='D MMM YYYY'/>
                     </Info>
                     <Buttons>
                         <Button onClick={handleLike}>
                             {
-                                data.likes?.includes(currentUser._id) ? (
+                                currentVideo.likes?.includes(currentUser._id) ? (
                                     <InsertEmoticonTwoToneIcon/>
                                 ) : (
                                     <SentimentVerySatisfiedOutlinedIcon/>
                                 )}
-                            {data.likes?.length}
+                            {currentVideo.likes?.length}
                         </Button>
                         <Button onClick={handleDislike}>
                             {
-                                data.dislikes?.includes(currentUser._id) ? (
+                                currentVideo.dislikes?.includes(currentUser._id) ? (
                                     <SentimentDissatisfiedTwoToneIcon/>
                                 ) : (
                                     <SentimentDissatisfiedOutlinedIcon/>
                                 )}
-                            {data.dislikes?.length}
+                            {currentVideo.dislikes?.length}
                         </Button>
                         <Button><ReplyOutlinedIcon/></Button>
                     </Buttons>
@@ -203,7 +210,7 @@ const VideoPage = () => {
                             <UserName>{channel.fullName}</UserName>
                             <UserCounter>{channel.subscribers} подписчиков</UserCounter>
                             <Description>
-                                {data.desc}
+                                {currentVideo.desc}
                             </Description>
                         </UserDetail>
                     </UserInfo>
@@ -213,11 +220,10 @@ const VideoPage = () => {
                         }
                     </Subscribe>
                 </User>
-                Коментарии:
-                <Comments/>
             </Content>
             <Recommend>
-
+                Коментарии:
+                <Comments videoId={currentVideo._id}/>
             </Recommend>
         </Container>
     );

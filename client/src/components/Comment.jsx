@@ -40,22 +40,26 @@ const Text = styled.span`
 
 
 const Comment = ({comment}) => {
-    /*const [channel, setChannel] = useState({});
+    const [user, setUser] = useState({});
+
     useEffect(() => {
         const fetchComment = async () => {
-            const res = await axios.get(`/users/find/${comment.userId}`);
-            setChannel(res.data)
-        };
-        fetchComment();
+            try {
+                const res = await axios.get(`/users/find/${comment.userId}`)
+                setUser(res.data)
+            }catch (e) {
+            }
+        }
+        fetchComment()
+    },[])
 
-    }, [comment.userId]);*/
     return (
         <Container>
-            <UserAvatar asda/>
+            <UserAvatar />
             <Details>
-                <Name>asdas {/*{channel.fullName} <Date><Moment date={channel.createdAt} format='D MMM YYYY'/></Date>*/}</Name>
+                <Name>{user.fullName} • <Moment date={user.createdAt} format='D MMM YYYY'/></Name>
                 <Text>
-                    {/*{comment.desc}*/}
+                    {comment.desc}
                 </Text>
             </Details>
         </Container>

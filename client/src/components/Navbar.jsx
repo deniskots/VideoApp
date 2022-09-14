@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from "styled-components";
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
@@ -9,6 +9,7 @@ import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../redux/slices/userSlice";
 import logo from "../assets/img/logo.svg";
+import UploadPopup from "./UploadPopup";
 
 const Container = styled.div`
   width: 100%;
@@ -102,6 +103,7 @@ const LoginBtn = styled.button`
 `;
 
 const Navbar = ({darkTheme, setDarkTheme}) => {
+    const [open, setOpen] = useState(false)
     const {data} = useSelector(state => state.user);
     const dispatch = useDispatch();
 
@@ -116,8 +118,9 @@ const Navbar = ({darkTheme, setDarkTheme}) => {
     };
 
     return (
-        <Container>
+        <>
 
+        <Container>
             <Wrapper>
                 <Link to='/' style={{textDecoration: 'none', color: 'inherit'}}>
                     <Logo>
@@ -133,7 +136,7 @@ const Navbar = ({darkTheme, setDarkTheme}) => {
                 {
                     data ? (
                         <UserPart>
-                            <FileUploadIcon style={{color: 'red'}}/>
+                            <FileUploadIcon onClick={() => setOpen(true)} style={{color: 'red'}}/>
                             <UserImg/>
                             {data.fullName}
                             <NavbarBtn onClick={onClickLogout}>
@@ -157,6 +160,10 @@ const Navbar = ({darkTheme, setDarkTheme}) => {
                 </NavbarBtn>
             </Wrapper>
         </Container>
+            {
+                open && <UploadPopup setOpen={setOpen}/>
+            }
+        </>
     );
 };
 

@@ -1,11 +1,5 @@
-import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import axios from "axios";
+import {createSlice} from "@reduxjs/toolkit";
 
-
-export const fetchVideos = createAsyncThunk('videos/fetchVideos', async (type) => {
-    const {data} = await axios.get(`/videos/${type}`);
-    return data;
-})
 
 const initialState = {
     data: null,

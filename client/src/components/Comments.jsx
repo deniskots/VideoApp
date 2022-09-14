@@ -2,7 +2,9 @@ import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import Comment from "./Comment";
 import axios from "axios";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {createComments} from "../redux/slices/commentSlice";
+import {useLocation} from "react-router-dom";
 
 
 const Container = styled.div`
@@ -30,43 +32,52 @@ const CommentInput = styled.input`
   padding: 5px;
   width: 60%;
 `;
-const as = styled.div`
-  display: flex;
-  gap: 10px;
-  margin: 30px 0px;
+const CommentBtn = styled.button`
+  background-color: transparent;
+  font-weight: 500;
+  color: ${({theme}) => theme.textSoft};
+  border: 1px solid;
+  border-radius: 3px;
+  height: max-content;
+  padding: 5px 12px;
+  cursor: pointer;
 `;
 
 const Comments = ({videoId}) => {
+    const dispatch = useDispatch()
     const [comments, setComments] = useState([]);
-    const currentUser = useSelector(state => state.user.data);
-    console.log(comments)
-    /*useEffect(() => {
-       /!*const fetchComments = async () => {
-           try {
-               const res = await axios.get(`/comments/${videoId}`)
-               console.log(res)
-               setComments(res.data)
-           }catch (e) {
-               console.log(e)
-           }
-           fetchComments()
-       }
-    },[videoId])*!/*/
+    const [comment, setComment] = useState('');
+    const path = useLocation().pathname.split('/')[2]
+
+    useEffect(() => {
+        const fetchComments = async () => {
+            try {
+                const res = await axios.get(`/comments/${videoId}`);
+                setComments(res.data)
+            }catch (e) {
+            }
+        }
+        fetchComments();
+    },[videoId]);
+
+
 
     return (
         <Container>
             <NewComment>
-                <UserAva src={currentUser.imgUrl}/>
-                <CommentInput placeholder='Добавить коментарий...'/>
+                <UserAva/>
+                <CommentInput
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    placeholder='Добавить коментарий...'/>
+                <CommentBtn> Отправить </CommentBtn>
             </NewComment>
-            {/*{
-                comments.map(comment => (
-                    <Comment key={comment.id} comment={comment}/>
-                ))
-            }*/}
+            {
+                comments.map((comment) => <Comment key={comment._id} comment={comment}/>)
+            }
+            {/*<Comment/>
             <Comment/>
-            <Comment/>
-            <Comment/>
+            <Comment/>*/}
         </Container>
     );
 };
