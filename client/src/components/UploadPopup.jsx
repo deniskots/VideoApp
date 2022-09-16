@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -64,19 +64,35 @@ const Button = styled.button`
 `;
 
 const UploadPopup = ({setOpen}) => {
+    const [img, setImg] = useState(undefined);
+    const [video, setVideo] = useState(undefined);
+    const [title, setTitle] = useState('');
+    const [desc, setDesc] = useState('');
     return (
         <Container>
             <Wrapper>
                 <Close onClick={() => setOpen(false)}>X</Close>
                 <Title>Загрузить новое видео</Title>
                 <Label> Видео:</Label>
-                <Input type='file'/>
-                <Input type='text' placeholder='Заголовок'/>
-                <Description placeholder='Описание'/>
+                <Input
+                    type='file'
+                    accept='video/*'
+                    onChange={(e) => setVideo(e.target.files[0])}
+                />
+                <Input
+                    type='text'
+                    placeholder='Заголовок'
+                    onChange={e => setTitle(e.target.value)}
+                />
+                <Description
+                    placeholder='Описание'
+                    onChange={e => setDesc(e.target.value)}
+                />
                 <Label> Изображение:</Label>
                 <Input
                     type="file"
                     accept="image/*"
+                    onChange={(e) => setImg(e.target.files[0])}
                 />
                 <Button>Загрузить</Button>
             </Wrapper>

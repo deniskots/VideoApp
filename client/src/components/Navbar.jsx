@@ -64,9 +64,12 @@ const NavbarBtn = styled.button`
 const UserPart = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 15px;
   font-weight: 500;
   color: ${({theme}) => theme.text};
+  &:hover {
+    cursor: pointer;
+  }
 `;
 const UserImg = styled.img`
   width: 32px;
@@ -132,7 +135,6 @@ const Navbar = ({darkTheme, setDarkTheme}) => {
                     <SearchInput placeholder='Поиск'></SearchInput>
                     <SearchOutlinedIcon/>
                 </SearchPart>
-
                 {
                     data ? (
                         <UserPart>
