@@ -172,7 +172,7 @@ const VideoPage = () => {
         <Container>
             <Content>
                 <VideoWrapper>
-                    <VideoFrame src={currentVideo.videoUrl}/>
+                    <VideoFrame src={currentVideo.videoUrl} controls/>
                 </VideoWrapper>
                 <Title> {currentVideo.title}</Title>
                 <Details>

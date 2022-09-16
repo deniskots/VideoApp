@@ -11,12 +11,12 @@ import RegisterPage from "./pages/RegisterPage";
 
 
 const Container = styled.div`
-  display: flex;
+  //display: flex;
   width: 100%;
 `;
 
 const Main = styled.div`
-  flex: 8;
+  //flex: 8;
   background-color: ${({theme}) => theme.bg};
   color: ${({theme}) => theme.text};
 `;
