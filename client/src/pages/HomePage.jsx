@@ -10,8 +10,10 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-column-gap: 35px;
+  grid-row-gap: 20px;
+  width: fit-content;
+  margin: 0 auto;
   @media (max-width: 1200px) {
     grid-template-columns: repeat(2, 1fr);
   };
