@@ -7,11 +7,13 @@ import SentimentDissatisfiedOutlinedIcon from '@mui/icons-material/SentimentDiss
 import SentimentDissatisfiedTwoToneIcon from '@mui/icons-material/SentimentDissatisfiedTwoTone';
 import Comments from "../components/Comments";
 import {useDispatch, useSelector} from "react-redux";
-import {useLocation, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
-import {dislike, fetchSuccess, like} from "../redux/slices/videoSlice";
+import {dislike, fetchRemovePost, fetchSuccess, like} from "../redux/slices/videoSlice";
 import Moment from "react-moment";
 import {sub} from "../redux/slices/userSlice";
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+
 
 const Container = styled.div`
   display: flex;
@@ -41,8 +43,8 @@ const VideoFrame = styled.video`
 `;
 
 const Title = styled.h1`
-  font-size: 18px;
-  font-weight: 400;
+  font-size: 22px;
+  font-weight: 600;
   margin-top: 20px;
   margin-bottom: 10px;
   color: ${({theme}) => theme.text};
@@ -136,7 +138,10 @@ const VideoPage = () => {
     const dispatch = useDispatch();
     //достать айди
     //const {id} = useParams()
-    const path = useLocation().pathname.split('/')[2]
+    const path = useLocation().pathname.split('/')[2];
+    const navigate = useNavigate()
+
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -167,6 +172,10 @@ const VideoPage = () => {
         dispatch(sub(channel._id))
     }
 
+    const onClickRemove = async () => {
+        await axios.delete(`/videos/${path}`)
+        navigate('/')
+    };
 
     return (
         <Container>
@@ -199,7 +208,10 @@ const VideoPage = () => {
                                 )}
                             {currentVideo.dislikes?.length}
                         </Button>
-                        <Button><ReplyOutlinedIcon/></Button>
+                        {
+                            currentUser._id === currentVideo.userId && <Button onClick={onClickRemove}><DeleteOutlineIcon/></Button>
+                        }
+
                     </Buttons>
                 </Details>
                 <Hr/>

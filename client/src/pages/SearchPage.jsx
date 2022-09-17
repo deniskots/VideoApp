@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import CardItem from "../components/CardItem";
-/*import axios from "../utils/axios";*/
-import {useDispatch, useSelector} from "react-redux";
-import {fetchVideos} from "../redux/slices/videoSlice";
 import axios from "axios";
+import {useLocation} from "react-router-dom";
 
 const Container = styled.div`
   display: grid;
@@ -21,31 +19,31 @@ const Container = styled.div`
     margin: 0 auto;
     //grid-template-columns: repeat(1, 1fr);
   }
-  /*display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;*/
 `;
 
 
 
-
-const HomePage = ({type}) => {
+const SearchPage = () => {
     const [videos, setVideos] = useState([]);
+    const query = useLocation().search;
+
 
     useEffect(() => {
         const fetchVideos = async () => {
-            const res = await axios.get(`/videos/${type}`)
-            setVideos(res.data)
-        }
+            const res = await axios.get(`/videos/search${query}`);
+            setVideos(res.data);
+        };
         fetchVideos();
-    }, [type]);
+    }, [query]);
 
 
     return (
         <Container>
-            {videos.map((video, index) => <CardItem key={index} video={video}/>)}
+            {videos.map(video=>(
+                <CardItem key={video._id} video={video}/>
+            ))}
         </Container>
     );
 };
 
-export default HomePage;
+export default SearchPage;

@@ -14,7 +14,6 @@ const Container = styled.div`
 const Img = styled.img`
   width: 100%;
   height: 170px;
-  background-color: green;
 `;
 
 const Details = styled.div`
@@ -34,8 +33,8 @@ const UserImg = styled.img`
 const Texts = styled.div``;
 
 const Title = styled.h1`
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 20px;
+  font-weight: 670;
   color: ${({ theme }) => theme.text};
 `;
 
@@ -65,7 +64,7 @@ const CardItem = ({type, video}) => {
             <Container type={type}>
                 <Img type={type} src={video.imgUrl}/>
                 <Details type={type}>
-                    <UserImg type={type} src={user.img}/>
+                    {/*<UserImg type={type} src={user.img}/>*/}
                     <Texts>
                         <Title>{video.title}</Title>
                         <UserName>{user.fullName}</UserName>

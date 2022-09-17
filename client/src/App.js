@@ -8,6 +8,7 @@ import HomePage from "./pages/HomePage";
 import VideoPage from "./pages/VideoPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import SearchPage from "./pages/SearchPage";
 
 
 const Container = styled.div`
@@ -44,6 +45,7 @@ function App() {
                                 <Route path='sub' element={<HomePage type='sub'/>}/>
                                 <Route path='login' element={<LoginPage/>}/>
                                 <Route path='register' element={<RegisterPage/>}/>
+                                <Route path='search' element={<SearchPage/>}/>
                                 <Route path='video'>
                                     <Route path=':id' element={<VideoPage/>}/>
                                 </Route>

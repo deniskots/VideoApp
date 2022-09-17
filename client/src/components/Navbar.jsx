@@ -5,7 +5,7 @@ import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import ModeNightOutlinedIcon from '@mui/icons-material/ModeNightOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../redux/slices/userSlice";
 import logo from "../assets/img/logo.svg";
@@ -38,6 +38,7 @@ const SearchPart = styled.div`
   padding: 5px;
   border: 1px solid #626161;
   border-radius: 4px;
+  cursor: pointer;
 `;
 
 const SearchInput = styled.input`
@@ -106,9 +107,11 @@ const LoginBtn = styled.button`
 `;
 
 const Navbar = ({darkTheme, setDarkTheme}) => {
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false);
+    const [query, setQuery] = useState('');
     const {data} = useSelector(state => state.user);
     const dispatch = useDispatch();
+    const navigate = useNavigate()
 
     const handleThemeChange = () => {
         setDarkTheme(!darkTheme)
@@ -117,12 +120,18 @@ const Navbar = ({darkTheme, setDarkTheme}) => {
     const onClickLogout = () => {
         if (window.confirm('Вы действительно хотите выйти?')) {
             dispatch(logout())
+            navigate('/login')
         }
+
     };
+
+    const handleSearch = () => {
+        navigate(`/search?q=${query}`)
+        setQuery('')
+    }
 
     return (
         <>
-
         <Container>
             <Wrapper>
                 <Link to='/' style={{textDecoration: 'none', color: 'inherit'}}>
@@ -132,14 +141,17 @@ const Navbar = ({darkTheme, setDarkTheme}) => {
                     </Logo>
                 </Link>
                 <SearchPart>
-                    <SearchInput placeholder='Поиск'></SearchInput>
-                    <SearchOutlinedIcon/>
+                    <SearchInput
+                        placeholder='Поиск'
+                        onChange={(e) => setQuery(e.target.value)}
+                    />
+                    <SearchOutlinedIcon onClick={handleSearch}/>
                 </SearchPart>
                 {
                     data ? (
                         <UserPart>
                             <FileUploadIcon onClick={() => setOpen(true)} style={{color: 'red'}}/>
-                            <UserImg/>
+                            {/*<UserImg/>*/}
                             {data.fullName}
                             <NavbarBtn onClick={onClickLogout}>
                                 <LogoutIcon/>

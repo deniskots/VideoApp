@@ -1,4 +1,6 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
+import axios from "axios";
+
 
 
 const initialState = {
@@ -42,6 +44,9 @@ const videoSlice = createSlice({
                     ),1
                 )
             }
+        },
+        delete: (state, action) => {
+
         }
     },
 

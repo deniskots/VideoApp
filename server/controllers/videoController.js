@@ -46,7 +46,9 @@ export const deleteVideo = async (req, res, next) => {
 }
 export const getVideo = async (req, res, next) => {
     try {
-        const video = await VideoModel.findById(req.params.id)
+        const video = await VideoModel.findByIdAndUpdate(req.params.id, {
+            $inc: {views: 1}
+        })
         res.json(video)
     } catch (e) {
         console.log(e)
